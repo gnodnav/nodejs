@@ -1,0 +1,273 @@
+<link rel="stylesheet" href="./templates/dashboard/css/style.css">
+<style>
+table, td, th {    
+	border: 2px solid #ddd;
+}
+table {
+    border-collapse: collapse;
+	width: 100%;
+
+}
+th, td {
+	padding: 15px;
+}
+</style>
+<div class="container">
+	<div class="row">
+		<div class="col-sm-3 col-md-3">
+			<div class="panel-group" id="accordion">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h4 class="panel-title">
+							<a data-toggle="collapse" data-parent="#accordion" data-target="#collapseOne"><span class="glyphicon glyphicon-folder-close text-primary">
+                            </span>Sản phẩm</a>
+						</h4>
+					</div>
+					<div id="collapseOne" class="panel-collapse collapse">
+						<div class="panel-body">
+							<table class="table">
+								<tr>
+									<td>
+										<span class="glyphicon glyphicon-shopping-cart "></span><a href ng-click="tableProduct()">Sản phẩm</a>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<span class="glyphicon glyphicon-pencil"></span><a href ng-click="tableUpload()">Thêm sản phẩm</a>
+									</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h4 class="panel-title">
+							<a data-toggle="collapse" data-parent="#accordion" data-target="#collapseFour"><span class="glyphicon glyphicon-file text-primary">
+                            </span>Reports</a>
+						</h4>
+					</div>
+					<div id="collapseFour" class="panel-collapse collapse">
+						<div class="panel-body">
+							<table class="table">
+								<tr>
+									<td>
+										<span class="glyphicon glyphicon-user"></span><a href ng-click="tableCustomer()">Customers</a>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<span class="glyphicon glyphicon-tasks"></span><a href>Products</a>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<span class="glyphicon glyphicon-shopping-cart"></span><a href>Shopping Cart</a>
+									</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h4 class="panel-title">
+							<a data-toggle="collapse" data-parent="#accordion" data-target="#collapseThree"><span class="glyphicon glyphicon-user text-primary">
+                            </span>Account</a>
+						</h4>
+					</div>
+					<div id="collapseThree" class="panel-collapse collapse">
+						<div class="panel-body">
+							<table class="table">
+								<tr>
+									<td>
+										<span class="glyphicon glyphicon-edit"></span><a href>Change Password</a>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<span class="glyphicon glyphicon-log-out "> </span><a href ng-click="logOut()">Sign Out</a>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<span class="glyphicon glyphicon-trash text-danger"></span><a href class="text-danger"> Delete Account</a>
+									</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-sm-9 col-md-9">
+			<div ng-switch="swProductTable">
+				<div ng-switch-when="upload">
+					<div class="well">
+						<div class="row">
+							<div class="col-md-1"></div>
+							<div class="col-md-10">
+								<form ng-controller="uploadFile as up" name="up.upload_form">
+							
+									<div class="col-md-1"></div>
+									<div class="col-md-5">
+										<div class="box">
+											<img class="text-center" style="width:200px;height: 200px;" ngf-thumbnail="up.file" />
+										</div>
+										<div class="input-group" style="margin-top:10px">
+											<span class="input-group-btn">
+												<div class="btn btn-primary image-preview-input">
+													<span class="glyphicon glyphicon-folder-open"></span>
+													<span class="image-preview-input-title">Browse</span>
+													<input type="file" ngf-select ng-model="up.file" name="file" ngf-pattern="'image/*'" accept="image/*" ngf-max-size="20MB"/>
+												</div>
+											</span>
+										</div><br>
+									</div>
+									<div class="col-md-5">
+										<div class="input-group">
+											<span class="input-group-addon">Product Name</span>
+											<input id="msg" type="text" class="form-control" name="msg" ng-model="productName">
+										</div><br>
+										<div class="input-group">
+											<span class="input-group-addon">General</span>
+											<input type="text" class="form-control" placeholder=" Price" ng-model="productPrice">
+											<span> 
+												<select class="form-control" ng-model="productType" >
+													<option>Phone</option>
+													<option>Tablet</option>
+													<option>PC</option>
+													<option>Camera</option>
+													<option>Headphone</option>
+												</select>
+											</span>
+										</div>
+										<br>
+										<div class="input-group">
+											
+											<textarea placeholder="Description" class="form-control" ng-model="productDescription" rows="4" cols="50"></textarea>
+										</div>
+										<br>
+										<div class="input-group" style="margin-top:14px;margin-left:145px">
+											<span class="input-group-btn">
+												<div class="btn btn-primary image-preview-input" ng-click="up.submit()">
+													<span class="glyphicon glyphicon-upload"></span>
+													<span class="image-preview-input-title">Upload</span>
+												</div>
+											</span>
+										</div><br>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div ng-switch-when ="sanpham">
+					<div class="well">
+						<table class="table text-center">
+							<tr>
+								<th class="text-center">Order</th>
+								<th class="text-center">Image</th>
+								<th class="text-center">Name</th>
+								<th class="text-center">Price</th>
+								<th class="text-center">Type</th>
+							</tr>
+							<tr ng-repeat="x in pagedItems[currentPage]">
+								<td>{{pagedItems[currentPage].indexOf(x)+1}}
+								<td><img ng-src="{{x.imageUrl}}"  style="height: 20px;width: 20px"> </td>
+								<td>{{ x.productName }}</td>
+								<td>{{ x.price }}$</td>
+								<td>{{ x.type }}</td>
+							</tr>
+							</table>
+						</div>
+						<div class="text-center">
+							<ul class="pagination" style="margin-top : 10px;">
+								<li ng-class="{disabled : currentPage == 0}"><a href ng-click="prevPage()">« Back</a></li>
+								<li ng-repeat="n in arrNumPage(pagedItems.length)" ng-class="{active: n == currentPage}" ng-click="setPage()"><a id="numpage" href ng-bind="n + 1"></a></li>
+								<li ng-class="{disabled: currentPage == pagedItems.length - 1}"><a href ng-click="nextPage()">Next »</a></li>
+							</ul>
+						</div>
+				</div>
+				<div ng-switch-when ="khachhang">
+					<div class="row well" ng-controller="KHController">
+						<div ng-class="{'col-md-1': hideForm ==true && hideFormUpdate == true , 'col-md-0':hideForm == fasle || hideFormUpdate == false }"></div>
+						<div class="animationTable" ng-class="{'col-md-9': hideForm == false || hideFormUpdate == false, 'col-md-12':hideForm ==true && hideFormUpdate ==true }">
+							<div id="custom-search-input">
+								<div class="input-group col-md-12">
+									<input type="text" class="form-control input-lg" placeholder="Search Name" ng-model="test" />
+									<span class="input-group-btn">
+										<button class="btn btn-info btn-lg" type="button">
+											<i class="glyphicon glyphicon-search" style="color:#0C4CA1"></i>
+										</button>
+									</span>
+								</div>
+							</div>
+							<div class="table-responsive">
+								<br>
+								<table class="table centertext" border="2" width="100%">
+									<tr class="info">
+										<th class="centertext">Order&nbsp;</th>
+										<th class="centertext">Name&nbsp;<a ng-click="orderByMe('name')"> <i class="fa fa-sort" style="font-size:20px;color:#0C4CA1;"></i></a></th>
+										<th class="centertext">Country&nbsp;<a ng-click="orderByMe('country')"><i class="fa fa-sort" style="font-size:20px;color:#0C4CA1;"></i></a></th>
+										<th class="centertext" ng-hide="editHide">Edit&nbsp;</th>
+									</tr>
+									<tr ng-repeat="x in pagedItems[currentPage] | orderBy:myOrderBy | filter:{name:test} ">
+										<td data-ng-style="(activeBtn ==x)&&!hideFormUpdate&& {'color':'#4CB748','font-size': '130%' }"> <span class="centertext">{{(pagedItems[currentPage].indexOf(x)+1)+currentPage*itemsPerPage}}</span></td>
+										<td data-ng-style="(activeBtn ==x) &&!hideFormUpdate&& {'color':'#4CB748','font-size': '130%' }">{{x.name}}</td>
+										<td data-ng-style="(activeBtn ==x) &&!hideFormUpdate&& {'color':'#4CB748','font-size': '130%' }">{{x.country}}</td>
+										<td ng-hide="editHide">
+											<span ng-hide="icon" class="fa fa-trash noActiveItem" ng-click="confirm(x)"></span>
+											<span ng-show="icon" class=" glyphicon glyphicon-edit noActiveItem " data-ng-style="(activeBtn ==x) && !hideFormUpdate&&{'color':'#4CB748'}" ng-click="getItem(x)"></span>
+										</td>
+									</tr>
+								</table>
+							</div>
+							<div class="text-center" >
+								<div class="btn-group">
+										<button ng-click="add()" type="button" class="btn btn-primary">Thêm</button>
+										<button ng-click="delete()" type="button" class="btn btn-primary">Xóa</button>
+										<button ng-click="edit()" type="button" class="btn btn-primary">Sửa</button>
+										<button ng-click="funHideBtn()" type="button" class="btn btn-primary">Quay Về</button>
+								</div>
+							</div>
+							<div class="text-center">
+								<ul class="pagination" style="margin-top : 10px;">
+									<li ng-class="{disabled : currentPage == 0}"><a href ng-click="prevPage()">« Back</a></li>
+									<li ng-repeat="n in arrNumPage(pagedItems.length)" ng-class="{active: n == currentPage}" ng-click="setPage()"><a id="numpage" href ng-bind="n + 1"></a></li>
+									<li ng-class="{disabled: currentPage == pagedItems.length - 1}"><a href ng-click="nextPage()">Next »</a></li>
+								</ul>
+							</div>
+						</div>
+						<!--form  -->
+						<div class="col-md-3 formcustomer" ng-hide="hideForm">
+							<form ng-submit="submitForm()">
+								<label for="usr">Name</label><br>
+								<input type="text" class="form-control" ng-model="newName"><br>
+								<label for="usr">Country</label><br>
+								<input type="text" class="form-control" ng-model="newCountry"><br>
+								<button type="submit" class="btn btn-primary" style="background-color: #0C4CA1">Thêm Khách Hàng</button><br>
+							</form>
+						</div>
+						<div class="col-md-3 formcustomer " ng-hide="hideFormUpdate">
+							<form ng-submit="updateCustomer(x)">
+								<label for="usr">Name</label><br>
+								<input type="text" class="form-control" ng-model="nameUpdate"><br>
+								<label for="usr">Country</label><br>
+								<input type="text" class="form-control" ng-model="countryUpdate"><br>
+								<button type="submit" class="btn btn-primary" style="background-color: #0C4CA1">Cập Nhật Thông Tin </button><br>
+							</form>
+						</div>
+						<!--ablers  -->
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+
+				
