@@ -1,12 +1,9 @@
-scotchApp.controller('TKController', function ($scope, $http, $location, $localStorage, $routeParams) {
+scotchApp.controller('TKController', function ($scope, $http, $location, $localStorage, $routeParams, Notification) {
 	$scope.itemsPerPage = 8;
 	$scope.pagedItems = [];
 	$scope.currentPage = 0;
-	$scope.hideForm = true;
-	$scope.hideFormUpdate = true;
-	$scope.editHide = true;
-	$scope.hideBtn = true;
-	
+	$scope.confirm = true;
+	$scope.Form = true;
 	if ($routeParams.n)
 		$scope.swProductTable = $routeParams.n
 	else
@@ -59,7 +56,7 @@ scotchApp.controller('TKController', function ($scope, $http, $location, $localS
 	}, function myError(response) {
 		$scope.myWelcome = response.statusText;
 	});
-	
+
 	$scope.parsePage = function (data) {
 		var numPage = data.length / $scope.itemsPerPage + 1;
 		for (var i = 0; i < numPage - 2; i++) {
@@ -106,44 +103,59 @@ scotchApp.controller('TKController', function ($scope, $http, $location, $localS
 		$scope.swProductTable = 'khachhang';
 		$location.update_path(`dashboard/khachhang`);
 	}
-});
-scotchApp.controller('uploadFile', ['Upload', '$window', '$scope', 'Notification', function (Upload, $window, $scope, Notification) {
-	var vm = this;
-	$scope.productType = "Phone";
-	vm.submit = function () { //function to call on form submit
-		if (vm.upload_form.file.$valid) { //check if from is valid
-			vm.upload(vm.file); //call upload function
-		}
+	$scope.tableChangePass = function () {
+		$scope.swProductTable = 'doimatkhau';
+		$location.update_path(`dashboard/doimatkhau`);
 	}
-	vm.upload = function (file) {
-		Upload.upload({
-			url: 'http://localhost:8000/upload', //webAPI exposed to upload the file
-			data: {
-				file: file,
-				name: $scope.productName,
-				price: $scope.productPrice,
-				description: $scope.productDescription,
-				type: $scope.productType
-			} //pass file as data, should be user ng-model
-		}).then(function (resp) { //upload function returns a promise
-			if (resp.data.error_code === 0) { //validate success
-				Notification({ message: `Bạn đã thêm ${$scope.productName}`, title: 'Thông báo', delay: 2000 });
-				$scope.productName = '';
-				$scope.productPrice = '';
-				$scope.productDescription = '';
-				vm.file = null;
-			} else {
-				$window.alert('an error occured');
-			}
-		}, function (resp) { //catch error
-			console.log('Error status: ' + resp.status);
-			$window.alert('Error status: ' + resp.status);
-		}, function (evt) {
-			console.log(evt);
-			var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
-			console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file.name);
-			vm.progress = 'progress: ' + progressPercentage + '% '; // capture upload progress
-		});
-	};
-}]);
+	$scope.changePassword = function () {
+		var data = {
+			event: 'changepassword',
+			user: $localStorage.userName,
+			currentPass: this.curPass,
+			newPass: this.newPass
+		}
+		$http.post('/events', JSON.stringify(data))
+			.then(function (response) {
+				if (response.data) {
+					if (response.data.error_code == 0) {
+						Notification({ message: `Bạn đã đổi mật khẩu ${data.user}`, title: 'Thông báo', delay: 2000 });
+						$rootScope.curPass = '';
+						this.newPass = '';
+						this.confirmPass = '';
+					} else if (response.data.error_code == 3) {
+						this.curPass = '';
+						swal(`Mật Khẩu Cũ Không Đúng`);
+					}
+					else {
+						swal(`Thất bại`);
+					}
+				}
+			}, function (response) {
+				console.log(response.statusText);
+				swal(`Thất bại`);
+			});
+	}
+	$scope.submitFormRegister = function () {
+		var data = {
+			event: "register",
+			username: $scope.register_username,
+			password: $scope.register_password,
+			email :$scope.register_email,
+			type : 'mod'
+		};
+		$http.post('/events', JSON.stringify(data))
+			.then(function (response) {
+				if (response.data) {
+					if (response.data.error_code == 0) {
+						$scope.Form = true;
+						Notification({ message: `Đăng ký thành công`, title: 'Thông báo', delay: 2000 });
+					} else {
+						console.log(response.data.err_desc)
+					}
+				}
+			}, function (response) {
+				console.log(response.statusText);
+			});
+	}
+});
 

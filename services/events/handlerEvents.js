@@ -55,7 +55,7 @@ handlerreq.on(eventsConfig.LOGIN_USER, function (req, res) {
         var myquery = { username: req.body.username, password: req.body.password };
         db.collection("user").find(myquery).toArray(function (err, result) {
             if (err) throw err;
-            if(result.length>0)
+            if (result.length > 0)
                 res.json("TRUE");
             else
                 res.send("FALSE");
@@ -65,5 +65,48 @@ handlerreq.on(eventsConfig.LOGIN_USER, function (req, res) {
         });
     });
 })
-
+//doi mat khau admin
+handlerreq.on(eventsConfig.CHANGE_PASSWORD, function (req, res) {
+    MongoClient.connect(url, function (err, db) {
+        if (err) throw err;
+        var myquery = { username: req.body.user, password: req.body.currentPass };
+        db.collection("user").find(myquery).toArray(function (err, result) {
+            if (err) {
+                res.json({ error_code: 1, err_desc: err });
+                return;
+            }
+            if (result.length > 0) {
+                var newvalues = { username: req.body.user, password: req.body.newPass, type: result[0].type };
+                db.collection("user").updateOne(result[0], newvalues, function (err, result) {
+                    if (err) {
+                        res.json({ error_code: 2, err_desc: err });
+                        return;
+                    }
+                    res.json({ error_code: 0, err_desc: err });
+                    util.log(`${req.body.username} đã đổi mật khẩu`);
+                });
+            } else
+                res.json({ error_code: 3, err_desc: err });
+            // return;
+            db.close();
+        });
+    });
+})
+// regiser customer
+handlerreq.on(eventsConfig.REGISTER_CUSTOMER, function (req, res) {
+    MongoClient.connect(url, function (err, db) {
+        if (err) throw err;
+        var myquery = { username: req.body.username, password: req.body.password, email: req.body.email, type: req.body.type };
+        db.collection("user").insert(myquery, function (err, result) {
+            if (err) {
+                res.json({ error_code: 1, err_desc: err });
+                return;
+            } else {
+                res.json({ error_code: 0, err_desc: err });
+                util.log(`${req.body.username} đăng kí thành công`);
+            }
+            db.close();
+        });
+    });
+})
 module.exports = handlerreq;

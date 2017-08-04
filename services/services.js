@@ -42,6 +42,8 @@ app.get('/khachhang', function (req, res) {
 //post req delete/insert/login
 app.post('/events', function (req, res) {
     handlerreq.Reponse(req, res);
+    //console.log(req.body);
+
 })
 //load html,image
 app.use(express.static(
@@ -118,4 +120,4 @@ app.post('/upload', function (req, res) {
         });
     })
 });
-app.listen(8080);
+app.listen(8000);
