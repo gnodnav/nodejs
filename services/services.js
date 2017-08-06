@@ -18,7 +18,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: false
 }));
-//get
+//get product
 app.get('/trangchu', function (req, res) {
     MongoClient.connect(urldb, function (err, db) {
         if (err) throw err;
@@ -29,10 +29,22 @@ app.get('/trangchu', function (req, res) {
         });
     });
 })
+//get customer
 app.get('/khachhang', function (req, res) {
     MongoClient.connect(urldb, function (err, db) {
         if (err) throw err;
         db.collection("customer").find({}).toArray(function (err, result) {
+            if (err) throw err;
+            res.send(result);
+            db.close();
+        });
+    });
+})
+//get list Moderator 
+app.get('/listMod', function (req, res) {
+    MongoClient.connect(urldb, function (err, db) {
+        if (err) throw err;
+        db.collection("user").find({type:"mod"}).toArray(function (err, result) {
             if (err) throw err;
             res.send(result);
             db.close();

@@ -1,16 +1,20 @@
 <link rel="stylesheet" href="./templates/dashboard/css/style.css">
 <style>
-table, td, th {    
-	border: 2px solid #ddd;
-}
-table {
-    border-collapse: collapse;
-	width: 100%;
+	table,
+	td,
+	th {
+		border: 2px solid #ddd;
+	}
 
-}
-th, td {
-	padding: 15px;
-}
+	table {
+		border-collapse: collapse;
+		width: 100%;
+	}
+
+	th,
+	td {
+		padding: 15px;
+	}
 </style>
 <div class="container">
 	<div class="row">
@@ -91,7 +95,7 @@ th, td {
 								</tr>
 								<tr>
 									<td>
-										<span class="glyphicon glyphicon-trash text-danger"></span><a href class="text-danger"> Delete Account</a>
+										<span class="glyphicon glyphicon-trash text-danger"></span><a ng-click="tableListMod()" href class="text-danger"> Delete Account</a>
 									</td>
 								</tr>
 							</table>
@@ -109,7 +113,7 @@ th, td {
 							<div class="col-md-1"></div>
 							<div class="col-md-10">
 								<form ng-controller="uploadFile as up" name="up.upload_form">
-							
+
 									<div class="col-md-1"></div>
 									<div class="col-md-5">
 										<div class="box">
@@ -119,21 +123,22 @@ th, td {
 											<span class="input-group-btn">
 												<div class="btn btn-primary image-preview-input">
 													<span class="glyphicon glyphicon-folder-open"></span>
-													<span class="image-preview-input-title">Browse</span>
-													<input type="file" ngf-select ng-model="up.file" name="file" ngf-pattern="'image/*'" accept="image/*" ngf-max-size="20MB"/>
-												</div>
-											</span>
-										</div><br>
-									</div>
-									<div class="col-md-5">
-										<div class="input-group">
-											<span class="input-group-addon">Product Name</span>
-											<input id="msg" type="text" class="form-control" name="msg" ng-model="productName">
-										</div><br>
-										<div class="input-group">
-											<span class="input-group-addon">General</span>
-											<input type="text" class="form-control" placeholder=" Price" ng-model="productPrice">
-											<span> 
+											<span class="image-preview-input-title">Browse</span>
+											<input type="file" ngf-select ng-model="up.file" name="file" ngf-pattern="'image/*'" accept="image/*" ngf-max-size="20MB"
+											/>
+										</div>
+										</span>
+									</div><br>
+							</div>
+							<div class="col-md-5">
+								<div class="input-group">
+									<span class="input-group-addon">Product Name</span>
+									<input id="msg" type="text" class="form-control" name="msg" ng-model="productName">
+								</div><br>
+								<div class="input-group">
+									<span class="input-group-addon">General</span>
+									<input type="text" class="form-control" placeholder=" Price" ng-model="productPrice">
+									<span> 
 												<select class="form-control" ng-model="productType" >
 													<option>Phone</option>
 													<option>Tablet</option>
@@ -142,183 +147,208 @@ th, td {
 													<option>Headphone</option>
 												</select>
 											</span>
-										</div>
-										<br>
-										<div class="input-group">
-											
-											<textarea placeholder="Description" class="form-control" ng-model="productDescription" rows="4" cols="50"></textarea>
-										</div>
-										<br>
-										<div class="input-group" style="margin-top:14px;margin-left:145px">
-											<span class="input-group-btn">
+								</div>
+								<br>
+								<div class="input-group">
+
+									<textarea placeholder="Description" class="form-control" ng-model="productDescription" rows="4" cols="50"></textarea>
+								</div>
+								<br>
+								<div class="input-group" style="margin-top:14px;margin-left:145px">
+									<span class="input-group-btn">
 												<div class="btn btn-primary image-preview-input" ng-click="up.submit()">
 													<span class="glyphicon glyphicon-upload"></span>
-													<span class="image-preview-input-title">Upload</span>
-												</div>
-											</span>
-										</div><br>
-									</div>
-								</form>
-							</div>
+									<span class="image-preview-input-title">Upload</span>
+								</div>
+								</span>
+							</div><br>
 						</div>
+						</form>
 					</div>
 				</div>
-				<div ng-switch-when ="sanpham">
-					<div class="well">
-						<table class="table text-center">
-							<tr>
-								<th class="text-center">Order</th>
-								<th class="text-center">Image</th>
-								<th class="text-center">Name</th>
-								<th class="text-center">Price</th>
-								<th class="text-center">Type</th>
-							</tr>
-							<tr ng-repeat="x in pagedItems[currentPage]">
-								<td>{{pagedItems[currentPage].indexOf(x)+1}}
-								<td><img ng-src="{{x.imageUrl}}"  style="height: 20px;width: 20px"> </td>
-								<td>{{ x.productName }}</td>
-								<td>{{ x.price }}$</td>
-								<td>{{ x.type }}</td>
-							</tr>
-							</table>
-						</div>
-						<div class="text-center">
-							<ul class="pagination" style="margin-top : 10px;">
-								<li ng-class="{disabled : currentPage == 0}"><a href ng-click="prevPage()">« Back</a></li>
-								<li ng-repeat="n in arrNumPage(pagedItems.length)" ng-class="{active: n == currentPage}" ng-click="setPage()"><a id="numpage" href ng-bind="n + 1"></a></li>
-								<li ng-class="{disabled: currentPage == pagedItems.length - 1}"><a href ng-click="nextPage()">Next »</a></li>
-							</ul>
-						</div>
-				</div>
-				<div ng-switch-when ="khachhang">
-					<div class="row well" ng-controller="KHController">
-						<div ng-class="{'col-md-1': hideForm ==true && hideFormUpdate == true , 'col-md-0':hideForm == fasle || hideFormUpdate == false }"></div>
-						<div class="animationTable" ng-class="{'col-md-9': hideForm == false || hideFormUpdate == false, 'col-md-12':hideForm ==true && hideFormUpdate ==true }">
-							<div id="custom-search-input">
-								<div class="input-group col-md-12">
-									<input type="text" class="form-control input-lg" placeholder="Search Name" ng-model="test" />
-									<span class="input-group-btn">
+			</div>
+		</div>
+		<div ng-switch-when="sanpham">
+			<div class="well">
+				<table class="table text-center">
+					<tr>
+						<th class="text-center">Order</th>
+						<th class="text-center">Image</th>
+						<th class="text-center">Name</th>
+						<th class="text-center">Price</th>
+						<th class="text-center">Type</th>
+					</tr>
+					<tr ng-repeat="x in pagedItems[currentPage]">
+						<td>{{pagedItems[currentPage].indexOf(x)+1}}
+							<td><img ng-src="{{x.imageUrl}}" style="height: 20px;width: 20px"> </td>
+							<td>{{ x.productName }}</td>
+							<td>{{ x.price }}$</td>
+							<td>{{ x.type }}</td>
+					</tr>
+				</table>
+			</div>
+			<div class="text-center">
+				<ul class="pagination" style="margin-top : 10px;">
+					<li ng-class="{disabled : currentPage == 0}"><a href ng-click="prevPage()">« Back</a></li>
+					<li ng-repeat="n in arrNumPage(pagedItems.length)" ng-class="{active: n == currentPage}" ng-click="setPage()"><a id="numpage" href ng-bind="n + 1"></a></li>
+					<li ng-class="{disabled: currentPage == pagedItems.length - 1}"><a href ng-click="nextPage()">Next »</a></li>
+				</ul>
+			</div>
+		</div>
+		<div ng-switch-when="khachhang">
+			<div class="row well" ng-controller="KHController">
+				<div ng-class="{'col-md-1': hideForm ==true && hideFormUpdate == true , 'col-md-0':hideForm == fasle || hideFormUpdate == false }"></div>
+				<div class="animationTable" ng-class="{'col-md-9': hideForm == false || hideFormUpdate == false, 'col-md-12':hideForm ==true && hideFormUpdate ==true }">
+					<div id="custom-search-input">
+						<div class="input-group col-md-12">
+							<input type="text" class="form-control input-lg" placeholder="Search Name" ng-model="test" />
+							<span class="input-group-btn">
 										<button class="btn btn-info btn-lg" type="button">
 											<i class="glyphicon glyphicon-search" style="color:#0C4CA1"></i>
 										</button>
 									</span>
-								</div>
-							</div>
-							<div class="table-responsive">
-								<br>
-								<table class="table centertext" border="2" width="100%">
-									<tr class="info">
-										<th class="centertext">Order&nbsp;</th>
-										<th class="centertext">Name&nbsp;<a ng-click="orderByMe('name')"> <i class="fa fa-sort" style="font-size:20px;color:#0C4CA1;"></i></a></th>
-										<th class="centertext">Country&nbsp;<a ng-click="orderByMe('country')"><i class="fa fa-sort" style="font-size:20px;color:#0C4CA1;"></i></a></th>
-										<th class="centertext" ng-hide="editHide">Edit&nbsp;</th>
-									</tr>
-									<tr ng-repeat="x in pagedItems[currentPage] | orderBy:myOrderBy | filter:{name:test} ">
-										<td data-ng-style="(activeBtn ==x)&&!hideFormUpdate&& {'color':'#4CB748','font-size': '130%' }"> <span class="centertext">{{(pagedItems[currentPage].indexOf(x)+1)+currentPage*itemsPerPage}}</span></td>
-										<td data-ng-style="(activeBtn ==x) &&!hideFormUpdate&& {'color':'#4CB748','font-size': '130%' }">{{x.name}}</td>
-										<td data-ng-style="(activeBtn ==x) &&!hideFormUpdate&& {'color':'#4CB748','font-size': '130%' }">{{x.country}}</td>
-										<td ng-hide="editHide">
-											<span ng-hide="icon" class="fa fa-trash noActiveItem" ng-click="confirm(x)"></span>
-											<span ng-show="icon" class=" glyphicon glyphicon-edit noActiveItem " data-ng-style="(activeBtn ==x) && !hideFormUpdate&&{'color':'#4CB748'}" ng-click="getItem(x)"></span>
-										</td>
-									</tr>
-								</table>
-							</div>
-							<div class="text-center" >
-								<div class="btn-group">
-										<button ng-click="add()" type="button" class="btn btn-primary">Thêm</button>
-										<button ng-click="delete()" type="button" class="btn btn-primary">Xóa</button>
-										<button ng-click="edit()" type="button" class="btn btn-primary">Sửa</button>
-										<button ng-click="funHideBtn()" type="button" class="btn btn-primary">Quay Về</button>
-								</div>
-							</div>
-							<div class="text-center">
-								<ul class="pagination" style="margin-top : 10px;">
-									<li ng-class="{disabled : currentPage == 0}"><a href ng-click="prevPage()">« Back</a></li>
-									<li ng-repeat="n in arrNumPage(pagedItems.length)" ng-class="{active: n == currentPage}" ng-click="setPage()"><a id="numpage" href ng-bind="n + 1"></a></li>
-									<li ng-class="{disabled: currentPage == pagedItems.length - 1}"><a href ng-click="nextPage()">Next »</a></li>
-								</ul>
-							</div>
-						</div>
-						<!--form  -->
-						<div class="col-md-3 formcustomer" ng-hide="hideForm">
-							<form ng-submit="submitForm()">
-								<label for="usr">Name</label><br>
-								<input type="text" class="form-control" ng-model="newName"><br>
-								<label for="usr">Country</label><br>
-								<input type="text" class="form-control" ng-model="newCountry"><br>
-								<button type="submit" class="btn btn-primary" style="background-color: #0C4CA1">Thêm Khách Hàng</button><br>
-							</form>
-						</div>
-						<div class="col-md-3 formcustomer " ng-hide="hideFormUpdate">
-							<form ng-submit="updateCustomer(x)">
-								<label for="usr">Name</label><br>
-								<input type="text" class="form-control" ng-model="nameUpdate"><br>
-								<label for="usr">Country</label><br>
-								<input type="text" class="form-control" ng-model="countryUpdate"><br>
-								<button type="submit" class="btn btn-primary" style="background-color: #0C4CA1">Cập Nhật Thông Tin </button><br>
-							</form>
-						</div>
-						<!--ablers  -->
-					</div>
-			</div>
-				<div ng-switch-when ="doimatkhau">
-					<div class="well">
-					<div class=" bootstrap snippet">
-						<div class="row">
-							<div class="col-xs-12 col-sm-12 col-md-10 col-md-offset-1">
-								<div class="panel panel-info">
-									<div class="panel-heading">
-										<h3 class="panel-title">
-											<span class="glyphicon glyphicon-th"></span>
-											Change password   
-										</h3>
-									</div>
-									<div class="panel-body">
-										<div class="row">
-											<div class="col-xs-6 col-sm-6 col-md-6 separator social-login-box"> <br>
-											<img alt="" class="img-thumbnail" src="https://bootdey.com/img/Content/avatar/avatar1.png">                        
-											</div>
-											<div style="margin-top:80px;" class="col-xs-6 col-sm-6 col-md-6 login-box">
-											<div class="form-group">
-												<div class="input-group">
-												<div class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></div>
-												<input ng-model="curPass"  class="form-control" type="password" placeholder="Current Password">
-												</div>
-											</div>
-											<div class="form-group">
-												<div class="input-group">
-												<div class="input-group-addon"><span class="glyphicon glyphicon-log-in"></span></div>
-												<input ng-model="newPass" class="form-control" type="password" placeholder="New Password">
-												</div>
-											</div>
-											<div class="form-group">
-												<div class="input-group">
-												<div class="input-group-addon"><span class="glyphicon glyphicon-check"></span></div>
-												<input ng-model="confirmPass" class="form-control" type="password" placeholder="Confirm Password">
-												</div>
-											</div>
-											</div>
-										</div>
-									</div>
-									<div class="panel-footer">
-										<div class="row">
-											<div class="col-xs-6 col-sm-6 col-md-6"></div>
-											<div class="col-xs-6 col-sm-6 col-md-6">
-												<button class="btn icon-btn-save btn-success" type="button" ng-click="changePassword()" ng-disabled="confirm" >
-												<span class="btn-save-label"><i class="glyphicon glyphicon-floppy-disk"></i></span>save</button>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
 						</div>
 					</div>
+					<div class="table-responsive">
+						<br>
+						<table class="table centertext" border="2" width="100%">
+							<tr class="info">
+								<th class="centertext">Order&nbsp;</th>
+								<th class="centertext">Name&nbsp;<a ng-click="orderByMe('name')"> <i class="fa fa-sort" style="font-size:20px;color:#0C4CA1;"></i></a></th>
+								<th class="centertext">Country&nbsp;<a ng-click="orderByMe('country')"><i class="fa fa-sort" style="font-size:20px;color:#0C4CA1;"></i></a></th>
+								<th class="centertext" ng-hide="editHide">Edit&nbsp;</th>
+							</tr>
+							<tr ng-repeat="x in pagedItems[currentPage] | orderBy:myOrderBy | filter:{name:test} ">
+								<td data-ng-style="(activeBtn ==x)&&!hideFormUpdate&& {'color':'#4CB748','font-size': '130%' }"> <span class="centertext">{{(pagedItems[currentPage].indexOf(x)+1)+currentPage*itemsPerPage}}</span></td>
+								<td data-ng-style="(activeBtn ==x) &&!hideFormUpdate&& {'color':'#4CB748','font-size': '130%' }">{{x.name}}</td>
+								<td data-ng-style="(activeBtn ==x) &&!hideFormUpdate&& {'color':'#4CB748','font-size': '130%' }">{{x.country}}</td>
+								<td ng-hide="editHide">
+									<span ng-hide="icon" class="fa fa-trash noActiveItem" ng-click="confirm(x)"></span>
+									<span ng-show="icon" class=" glyphicon glyphicon-edit noActiveItem " data-ng-style="(activeBtn ==x) && !hideFormUpdate&&{'color':'#4CB748'}"
+									 ng-click="getItem(x)"></span>
+								</td>
+							</tr>
+						</table>
+					</div>
+					<div class="text-center">
+						<div class="btn-group">
+							<button ng-click="add()" type="button" class="btn btn-primary">Thêm</button>
+							<button ng-click="delete()" type="button" class="btn btn-primary">Xóa</button>
+							<button ng-click="edit()" type="button" class="btn btn-primary">Sửa</button>
+							<button ng-click="funHideBtn()" type="button" class="btn btn-primary">Quay Về</button>
+						</div>
+					</div>
+					<div class="text-center">
+						<ul class="pagination" style="margin-top : 10px;">
+							<li ng-class="{disabled : currentPage == 0}"><a href ng-click="prevPage()">« Back</a></li>
+							<li ng-repeat="n in arrNumPage(pagedItems.length)" ng-class="{active: n == currentPage}" ng-click="setPage()"><a id="numpage" href ng-bind="n + 1"></a></li>
+							<li ng-class="{disabled: currentPage == pagedItems.length - 1}"><a href ng-click="nextPage()">Next »</a></li>
+						</ul>
 					</div>
 				</div>
+				<!--form  -->
+				<div class="col-md-3 formcustomer" ng-hide="hideForm">
+					<form ng-submit="submitForm()">
+						<label for="usr">Name</label><br>
+						<input type="text" class="form-control" ng-model="newName"><br>
+						<label for="usr">Country</label><br>
+						<input type="text" class="form-control" ng-model="newCountry"><br>
+						<button type="submit" class="btn btn-primary" style="background-color: #0C4CA1">Thêm Khách Hàng</button><br>
+					</form>
+				</div>
+				<div class="col-md-3 formcustomer " ng-hide="hideFormUpdate">
+					<form ng-submit="updateCustomer(x)">
+						<label for="usr">Name</label><br>
+						<input type="text" class="form-control" ng-model="nameUpdate"><br>
+						<label for="usr">Country</label><br>
+						<input type="text" class="form-control" ng-model="countryUpdate"><br>
+						<button type="submit" class="btn btn-primary" style="background-color: #0C4CA1">Cập Nhật Thông Tin </button><br>
+					</form>
+				</div>
+				<!--ablers  -->
+			</div>
+		</div>
+		<div ng-switch-when="doimatkhau">
+			<div class="well">
+				<div class=" bootstrap snippet">
+					<div class="row">
+						<div class="col-xs-12 col-sm-12 col-md-10 col-md-offset-1">
+							<div class="panel panel-info">
+								<div class="panel-heading">
+									<h3 class="panel-title">
+										<span class="glyphicon glyphicon-th"></span> Change password
+									</h3>
+								</div>
+								<div class="panel-body">
+									<div class="row">
+										<div class="col-xs-6 col-sm-6 col-md-6 separator social-login-box"> <br>
+											<img alt="" class="img-thumbnail" src="https://bootdey.com/img/Content/avatar/avatar1.png">
+										</div>
+										<div style="margin-top:80px;" class="col-xs-6 col-sm-6 col-md-6 login-box">
+											<div class="form-group">
+												<div class="input-group">
+													<div class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></div>
+													<input ng-model="curPass" class="form-control" type="password" placeholder="Current Password">
+												</div>
+											</div>
+											<div class="form-group">
+												<div class="input-group">
+													<div class="input-group-addon"><span class="glyphicon glyphicon-log-in"></span></div>
+													<input ng-model="newPass" class="form-control" type="password" placeholder="New Password">
+												</div>
+											</div>
+											<div class="form-group">
+												<div class="input-group">
+													<div class="input-group-addon"><span class="glyphicon glyphicon-check"></span></div>
+													<input ng-model="confirmPass" class="form-control" type="password" placeholder="Confirm Password">
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="panel-footer">
+									<div class="row">
+										<div class="col-xs-6 col-sm-6 col-md-6"></div>
+										<div class="col-xs-6 col-sm-6 col-md-6">
+											<button class="btn icon-btn-save btn-success" type="button" ng-click="changePassword()" ng-disabled="confirm">
+												<span class="btn-save-label"><i class="glyphicon glyphicon-floppy-disk"></i></span>save</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div ng-switch-when="xoataikhoan">
+			<div class="well">
+				<table class="table text-center">
+					<tr>
+						<th class="text-center">Order</th>
+						<th class="text-center">Image</th>
+						<th class="text-center">Username</th>
+						<th class="text-center">Email</th>
+						<th class="text-center">Type</th>
+					</tr>
+					<tr ng-repeat="x in pagedItems[currentPage]">
+						<td>{{pagedItems[currentPage].indexOf(x)+1}}
+							<td><img src="/res/media/anon_user.png" style="height: 20px;width: 20px"> </td>
+							<td>{{ x.username }}</td>
+							<td>{{ x.email }}$</td>
+							<td>{{ x.type }}</td>
+					</tr>
+				</table>
+			</div>
+			<div class="text-center">
+				<ul class="pagination" style="margin-top : 10px;">
+					<li ng-class="{disabled : currentPage == 0}"><a href ng-click="prevPage()">« Back</a></li>
+					<li ng-repeat="n in arrNumPage(pagedItems.length)" ng-class="{active: n == currentPage}" ng-click="setPage()"><a id="numpage" href ng-bind="n + 1"></a></li>
+					<li ng-class="{disabled: currentPage == pagedItems.length - 1}"><a href ng-click="nextPage()">Next »</a></li>
+				</ul>
+			</div>
 		</div>
 	</div>
 </div>
 </div>
-
-
+</div>

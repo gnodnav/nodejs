@@ -19,6 +19,15 @@ scotchApp.controller('TKController', function ($scope, $http, $location, $localS
 		if ($routeParams.num)
 			$location.update_path(`/dashboard/${$routeParams.n}/table/${$routeParams.num}`);
 	}
+	$http({
+		method: "GET",
+		url: "/trangchu"
+	}).then(function mySuccess(response) {
+		$scope.products = response.data;
+		$scope.parsePage($scope.products);
+	}, function myError(response) {
+		$scope.myWelcome = response.statusText;
+	});
 	$scope.logOut = function () {
 		$localStorage.userName = "";
 		$location.path("/taikhoan");
@@ -47,16 +56,6 @@ scotchApp.controller('TKController', function ($scope, $http, $location, $localS
 				console.log(response.statusText);
 			});
 	}
-	$http({
-		method: "GET",
-		url: "/trangchu"
-	}).then(function mySuccess(response) {
-		$scope.products = response.data;
-		$scope.parsePage($scope.products);
-	}, function myError(response) {
-		$scope.myWelcome = response.statusText;
-	});
-
 	$scope.parsePage = function (data) {
 		var numPage = data.length / $scope.itemsPerPage + 1;
 		for (var i = 0; i < numPage - 2; i++) {
@@ -140,8 +139,8 @@ scotchApp.controller('TKController', function ($scope, $http, $location, $localS
 			event: "register",
 			username: $scope.register_username,
 			password: $scope.register_password,
-			email :$scope.register_email,
-			type : 'mod'
+			email: $scope.register_email,
+			type: 'mod'
 		};
 		$http.post('/events', JSON.stringify(data))
 			.then(function (response) {
@@ -157,5 +156,23 @@ scotchApp.controller('TKController', function ($scope, $http, $location, $localS
 				console.log(response.statusText);
 			});
 	}
+	//get danh sach customer
+	$scope.tableListMod = function () {
+		$location.update_path(`dashboard/xoataikhoan`);
+		$scope.swProductTable = "xoataikhoan";
+		$scope.pagedItems = [];
+		$http({
+			method: "GET",
+			url: "/listMod"
+		}).then(function mySuccess(response) {
+			$scope.products = response.data;
+			//console.log($scope.products);
+			$scope.parsePage($scope.products);
+			//console.log(response.data);
+		}, function myError(response) {
+			$scope.myWelcome = response.statusText;
+		});
+	}
+
 });
 
